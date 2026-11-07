@@ -6,11 +6,15 @@ from player import Player
 def main():
     print(f"Starting Asteroids")
 
-    screen = init_screen()
-    clock = pygame.time.Clock()
     dt: float = 0.0
+    updatable = pygame.sprite.Group()
+    drawable = pygame.sprite.Group()
 
+    Player.containers = (updatable, drawable)
+
+    screen = init_screen()
     player = init_player()
+    clock = pygame.time.Clock()
 
     while True:
         log_state()
@@ -22,8 +26,9 @@ def main():
         screen.fill("black")
         dt = clock.tick(60) / 1000
 
-        player.update(dt)
-        player.draw(screen)
+        updatable.update(dt)
+        for entity in drawable:
+            entity.draw(screen)
 
         pygame.display.flip()
 
